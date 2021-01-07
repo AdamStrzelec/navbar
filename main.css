@@ -35,6 +35,9 @@ nav{
     color: gray;
     cursor: pointer;
 }
+.show-more{
+    width: 150px;
+}
 .list-item:after{
     position: absolute;
     content: '';
