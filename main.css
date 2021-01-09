@@ -53,10 +53,10 @@ nav{
 .not-fit-objects-container{
     padding: 0;
     position: absolute;
-    bottom: 0px;
+    bottom: 0;
     transition: transform 0.4s ease-in-out;
     left: 0;
-    width: 100%;
+    width: 200px;
     /* background-color: brown; */
     border: 1px solid rgb(223, 223, 223);
 }
@@ -116,4 +116,10 @@ nav{
     justify-content: center;
     align-items: center;
 }
-
+.nav-wrapper{
+    position: fixed;
+    top: 0;
+    left: 0;
+    /* width: 100vw;
+    height: 100vh; */
+}
