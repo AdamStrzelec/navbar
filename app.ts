@@ -4,7 +4,6 @@ const navList = document.getElementById('nav-list');
 const visualLanguageButton = document.getElementById('visual-language');
 
 const showMoreListItem = document.createElement("li");
-
 showMoreListItem.classList.add("list-item");
 showMoreListItem.classList.add("show-more");
 const showMoreButton = document.createElement("button");
@@ -14,10 +13,8 @@ const notFitObjectsContainer = document.createElement("ul");
 notFitObjectsContainer.classList.add("not-fit-objects-container");
 
 showMoreListItem.appendChild(notFitObjectsContainer);
-// nav.appendChild(notFitObjectsContainer);
 showMoreListItem.appendChild(showMoreButton);
 let isShowMorePanelOpen = false;
-
 
 interface NavbarComponent{
     componentName: string,
@@ -46,6 +43,11 @@ const componentsArray = [
         children: ['Action', 'Another action', 'something else here'],
         isFocused: false,
     },
+    {
+        componentName: 'Component 4',
+        children: [],
+        isFocused: false,
+    },
 ]
 
 function addComponentToList(component: NavbarComponent){
@@ -62,8 +64,6 @@ function addComponentToList(component: NavbarComponent){
 
     componentName.classList.add("paragraph-item");
     notFitComponentName.classList.add("paragraph-item");
-
-
 
     notFitObject.classList.add("list-item");
     notFitObject.classList.add("not-fit-component");
@@ -88,8 +88,6 @@ function addComponentToList(component: NavbarComponent){
         }
     }
 
-    
-
     listItemContent.classList.add('list-item-content');
     componentName.innerText = component.componentName;
     notFitListItemContent.classList.add('list-item-content');
@@ -103,7 +101,6 @@ function addComponentToList(component: NavbarComponent){
 
     notFitObject.appendChild(notFitListItemContent);
     notFitObjectsContainer.appendChild(notFitObject);
-    // notFitObjectsContainer.appendChild(notFitComponentName);
     notFitObject.appendChild(notFitComponentWithChildren);
 
     componentName.addEventListener('click', ()=>{
@@ -118,13 +115,9 @@ function addComponentToList(component: NavbarComponent){
         component.isFocused = !component.isFocused;
         if(component.isFocused){
             notFitComponentWithChildren.style.transform = "translateY(104%) scale(1)";
-            // notFitComponentWithChildren.style.transform = "scale(1)";
             notFitObject.style.marginBottom = notFitComponentWithChildren.clientHeight+"px";
         }else{
             notFitComponentWithChildren.style.transform = "translateY(0%) scale(0)";
-            // notFitComponentWithChildren.style.transform = "scale(0)";
-            // notFitComponentWithChildren.style.scale = ""
-            // notFitListItemContent.style.marginBottom = "50px";
             notFitObject.style.marginBottom = "0px";
         }
     })
@@ -134,31 +127,14 @@ for(let i=0; i<componentsArray.length; i++){
     addComponentToList(componentsArray[i]);
 }
 
-// const showMoreListItem = document.createElement("li");
-
-// showMoreListItem.classList.add("list-item");
-// showMoreListItem.classList.add("show-more");
-// const showMoreButton = document.createElement("button");
-// showMoreButton.innerText = "Show More";
-// showMoreButton.classList.add('show-more-button');
-// const notFitObjectsContainer = document.createElement("div");
-// notFitObjectsContainer.classList.add("not-fit-objects-container");
-
-// showMoreListItem.appendChild(notFitObjectsContainer);
-// showMoreListItem.appendChild(showMoreButton);
-// let isShowMorePanelOpen = false;
-
 navList.appendChild(showMoreListItem);
 const components = document.querySelectorAll<HTMLElement>('.navbar-component');
 const notFitComponenst = document.querySelectorAll<HTMLElement>('.not-fit-component');
 const singleComponentWidth = 200;
-// const rect = element.getBoundingClientRect();
 
 window.addEventListener('resize', ()=>handleWindowResize());
 
-showMoreButton.addEventListener('click', ()=>{
-    isShowMorePanelOpen = !isShowMorePanelOpen;
-    console.log(isShowMorePanelOpen);
+function handleOpenPanel(){
     if(isShowMorePanelOpen){
         if(nav.clientWidth<600){
             notFitObjectsContainer.style.transform = "translateX(100%)";
@@ -168,6 +144,8 @@ showMoreButton.addEventListener('click', ()=>{
         }
         if(nav.clientWidth>=600){
             notFitObjectsContainer.style.transform = "translateY(100%)";
+            navWrapper.style.width = null;
+            navWrapper.style.height = null;
         }
     }else{
         if(nav.clientWidth<600){
@@ -180,9 +158,16 @@ showMoreButton.addEventListener('click', ()=>{
             notFitObjectsContainer.style.transform = "translateY(0%)";
         }
     }
+}
+
+showMoreButton.addEventListener('click', ()=>{
+    isShowMorePanelOpen = !isShowMorePanelOpen;
+    console.log(isShowMorePanelOpen);
+    handleOpenPanel();
 })
 
 function handleWindowResize(){
+    handleOpenPanel();
     if(nav.clientWidth<600){
         notFitObjectsContainer.style.position = "fixed";
         notFitObjectsContainer.style.left = "-200px";
@@ -194,15 +179,6 @@ function handleWindowResize(){
         notFitObjectsContainer.style.bottom = "0px";
         notFitObjectsContainer.style.top = null;
     }
-    console.log(notFitObjectsContainer.getBoundingClientRect().left);
-    // if(nav.clientWidth>=600){
-    //     showMoreListItem.appendChild(notFitObjectsContainer);
-    //     nav.removeChild(notFitObjectsContainer);
-    // }
-    // else{
-    //     showMoreListItem.appendChild(notFitObjectsContainer);
-    //     nav.removeChild(notFitObjectsContainer);
-    // }
     if(isAllComponentsFitInNavbar()){
         showMoreListItem.style.display = "none";
     }else{

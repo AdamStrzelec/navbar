@@ -11,7 +11,6 @@ showMoreButton.classList.add('show-more-button');
 var notFitObjectsContainer = document.createElement("ul");
 notFitObjectsContainer.classList.add("not-fit-objects-container");
 showMoreListItem.appendChild(notFitObjectsContainer);
-// nav.appendChild(notFitObjectsContainer);
 showMoreListItem.appendChild(showMoreButton);
 var isShowMorePanelOpen = false;
 var componentsArray = [
@@ -33,6 +32,11 @@ var componentsArray = [
     {
         componentName: 'Component 3',
         children: ['Action', 'Another action', 'something else here'],
+        isFocused: false
+    },
+    {
+        componentName: 'Component 4',
+        children: [],
         isFocused: false
     },
 ];
@@ -80,7 +84,6 @@ function addComponentToList(component) {
     navList.appendChild(listItem);
     notFitObject.appendChild(notFitListItemContent);
     notFitObjectsContainer.appendChild(notFitObject);
-    // notFitObjectsContainer.appendChild(notFitComponentName);
     notFitObject.appendChild(notFitComponentWithChildren);
     componentName.addEventListener('click', function () {
         component.isFocused = !component.isFocused;
@@ -95,14 +98,10 @@ function addComponentToList(component) {
         component.isFocused = !component.isFocused;
         if (component.isFocused) {
             notFitComponentWithChildren.style.transform = "translateY(104%) scale(1)";
-            // notFitComponentWithChildren.style.transform = "scale(1)";
             notFitObject.style.marginBottom = notFitComponentWithChildren.clientHeight + "px";
         }
         else {
             notFitComponentWithChildren.style.transform = "translateY(0%) scale(0)";
-            // notFitComponentWithChildren.style.transform = "scale(0)";
-            // notFitComponentWithChildren.style.scale = ""
-            // notFitListItemContent.style.marginBottom = "50px";
             notFitObject.style.marginBottom = "0px";
         }
     });
@@ -110,26 +109,12 @@ function addComponentToList(component) {
 for (var i = 0; i < componentsArray.length; i++) {
     addComponentToList(componentsArray[i]);
 }
-// const showMoreListItem = document.createElement("li");
-// showMoreListItem.classList.add("list-item");
-// showMoreListItem.classList.add("show-more");
-// const showMoreButton = document.createElement("button");
-// showMoreButton.innerText = "Show More";
-// showMoreButton.classList.add('show-more-button');
-// const notFitObjectsContainer = document.createElement("div");
-// notFitObjectsContainer.classList.add("not-fit-objects-container");
-// showMoreListItem.appendChild(notFitObjectsContainer);
-// showMoreListItem.appendChild(showMoreButton);
-// let isShowMorePanelOpen = false;
 navList.appendChild(showMoreListItem);
 var components = document.querySelectorAll('.navbar-component');
 var notFitComponenst = document.querySelectorAll('.not-fit-component');
 var singleComponentWidth = 200;
-// const rect = element.getBoundingClientRect();
 window.addEventListener('resize', function () { return handleWindowResize(); });
-showMoreButton.addEventListener('click', function () {
-    isShowMorePanelOpen = !isShowMorePanelOpen;
-    console.log(isShowMorePanelOpen);
+function handleOpenPanel() {
     if (isShowMorePanelOpen) {
         if (nav.clientWidth < 600) {
             notFitObjectsContainer.style.transform = "translateX(100%)";
@@ -139,6 +124,8 @@ showMoreButton.addEventListener('click', function () {
         }
         if (nav.clientWidth >= 600) {
             notFitObjectsContainer.style.transform = "translateY(100%)";
+            navWrapper.style.width = null;
+            navWrapper.style.height = null;
         }
     }
     else {
@@ -152,8 +139,14 @@ showMoreButton.addEventListener('click', function () {
             notFitObjectsContainer.style.transform = "translateY(0%)";
         }
     }
+}
+showMoreButton.addEventListener('click', function () {
+    isShowMorePanelOpen = !isShowMorePanelOpen;
+    console.log(isShowMorePanelOpen);
+    handleOpenPanel();
 });
 function handleWindowResize() {
+    handleOpenPanel();
     if (nav.clientWidth < 600) {
         notFitObjectsContainer.style.position = "fixed";
         notFitObjectsContainer.style.left = "-200px";
@@ -165,15 +158,6 @@ function handleWindowResize() {
         notFitObjectsContainer.style.bottom = "0px";
         notFitObjectsContainer.style.top = null;
     }
-    console.log(notFitObjectsContainer.getBoundingClientRect().left);
-    // if(nav.clientWidth>=600){
-    //     showMoreListItem.appendChild(notFitObjectsContainer);
-    //     nav.removeChild(notFitObjectsContainer);
-    // }
-    // else{
-    //     showMoreListItem.appendChild(notFitObjectsContainer);
-    //     nav.removeChild(notFitObjectsContainer);
-    // }
     if (isAllComponentsFitInNavbar()) {
         showMoreListItem.style.display = "none";
     }
